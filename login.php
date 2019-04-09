@@ -6,9 +6,10 @@ if ($_SESSION['uname'])
 	if ($_SERVER['REQUEST_URI'] == "/login.php")
 		header("Location: index.php");
 	echo "<form id='login-form' action='/logout.php' method='post'>";
+	echo "Hello " . $_SESSION['uname'] . "<br>" . $_SESSION['email'] . "<br><br>";
 	echo "<input type='submit' name='submit' value='Logout'>";
 	echo "</form>";
-	exit;
+	return;
 }
 
 if ($_POST['submit'] == "Login" && $_POST['username'] && ctype_alpha($_POST['username']) && strlen($_POST['password']) >= 4) {
@@ -25,10 +26,12 @@ if ($_POST['submit'] == "Login" && $_POST['username'] && ctype_alpha($_POST['use
 
 	foreach ($res as $ulog) {
 		if ($ulog['username'] == $_POST['username']) {
-			if ($ulog['password'] == $_POST['password'])
+			if (password_verify($_POST['password'], $ulog['password']))
+			
 			{
 				$err = false;
 				$_SESSION['uname'] = $_POST['username'];
+				$_SESSION['email'] = $ulog['email'];
 			}
 			else
 				$err = true;

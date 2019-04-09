@@ -1,13 +1,13 @@
 <?php
 session_start();
 require_once "config/database.php";
-
 require_once "header.php";
 
 echo "<div class='form-popup'>";
 echo "<button type='button' onclick=\"document.getElementById('login-form').style.display = (document.getElementById('login-form').style.display == 'block' ? 'none' : 'block')\">+</button>";
 require_once "login.php";
 echo "</div>";
+
 
 try {
 	$pdo = new PDO($DB_DSN, $DB_USER, $DB_PASSWORD);
@@ -24,13 +24,15 @@ try {
 		echo "<table>";
 		echo "<tr>";
 		echo "<th>UID</th>";
+		echo "<th>Email</th>";
 		echo "<th>Username</th>";
 		echo "<th>Password</th>";
 		echo "</tr>";
 		while ($row = $res->fetch()) {
 			echo "<tr>";
 			echo "<td>" . $row['uid'] . "</td>";
-			echo "<td>" . $row['name'] . "</td>";
+			echo "<td>" . $row['email'] . "</td>";
+			echo "<td>" . $row['username'] . "</td>";
 			echo "<td>" . $row['password'] . "</td>";
 			echo "</tr>";
 		}

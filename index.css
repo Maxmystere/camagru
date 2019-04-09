@@ -41,6 +41,6 @@ body {
 
 .form-popup #login-form{
 	display: none;
-	margin: 0;
+	margin: 5px;
 
 }

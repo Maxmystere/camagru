@@ -20,13 +20,15 @@ try {
 		"CREATE TABLE `camagru`.`userlist`
 		(
 			`uid` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+			`email` VARCHAR(255) NOT NULL,
 			`username` VARCHAR(45) NOT NULL,
-			`password` VARCHAR(45) NOT NULL,
+			`password` VARCHAR(255) NOT NULL,
 			`creationtime` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
 			PRIMARY KEY (`uid`)
 		);",
-		"INSERT INTO userlist (username, password) VALUE ('root', 'root')"
+		"INSERT INTO userlist (email, username, password) VALUE ('root@localhost', 'root', '". password_hash('root', PASSWORD_DEFAULT) ."')"
 	);
+	
 
 	foreach ($sql_requests as $sql) {
 		try {
