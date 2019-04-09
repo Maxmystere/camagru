@@ -6,7 +6,7 @@ if ($_SESSION['uname'])
 	if ($_SERVER['REQUEST_URI'] == "/login.php")
 		header("Location: index.php");
 	echo "<form id='login-form' action='/logout.php' method='post'>";
-	echo "Hello " . $_SESSION['uname'] . "<br>" . $_SESSION['email'] . "<br><br>";
+	echo "Hello " . $_SESSION['uname'] . "<br>" . $_SESSION['email'] . "<br>";
 	echo "<input type='submit' name='submit' value='Logout'>";
 	echo "</form>";
 	return;
@@ -27,21 +27,20 @@ if ($_POST['submit'] == "Login" && $_POST['username'] && ctype_alpha($_POST['use
 	foreach ($res as $ulog) {
 		if ($ulog['username'] == $_POST['username']) {
 			if (password_verify($_POST['password'], $ulog['password']))
-			
 			{
 				$err = false;
 				$_SESSION['uname'] = $_POST['username'];
 				$_SESSION['email'] = $ulog['email'];
 			}
-			else
+			else if (!isset($err))
 				$err = true;
 		}
-		else
+		else if (!isset($err))
 			$err = true;
 	}
 }
 
-if (!$err && $_SERVER['REQUEST_URI'] == "/login.php")
+if (isset($err) && !$err && $_SERVER['REQUEST_URI'] == "/login.php")
 {
 	header("Location: index.php");
 	exit;
@@ -61,4 +60,6 @@ if ($err)
   Password:<br>
   <input type="password" minlength="4" name="password" required><br>
   <input type="submit" name="submit" value="Login">
+  <a href="/register.php">Or register</a>
 </form>
+

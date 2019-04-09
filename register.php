@@ -18,14 +18,14 @@ if ($_POST['submit'] == "Register" && filter_var($_POST['email'], FILTER_VALIDAT
 		die("Connection failed: Sorry !");
 	}
 
-	$req = "INSERT INTO userlist (email, username, password) VALUE (". $_POST['email'] . ", " . $_POST['username'] . ", " . password_hash($_POST['password'], PASSWORD_DEFAULT) . ")";
+	$req = "INSERT INTO userlist (email, username, password) VALUE ('". $_POST['email'] . "', '" . $_POST['username'] . "', '" . password_hash($_POST['password'], PASSWORD_DEFAULT) . "')";
 
 	$res = $pdo->query($req);
 
 
 }
 
-if (!$err && $_SERVER['REQUEST_URI'] == "/login.php")
+if (isset($err) && !$err && $_SERVER['REQUEST_URI'] == "/register.php")
 {
 	header("Location: index.php");
 	exit;
@@ -45,6 +45,7 @@ if ($err)
 	Username:<br>
 	<input type="text" pattern="[A-Za-z]+" name="username" required><br>
 	Password:<br>
-	<input type="password" minlength="4" name="password" required><br>
+	<input type="password" minlength="4" name="password" required><br><br>
 	<input type="submit" name="submit" value="Register">
 </form>
+
