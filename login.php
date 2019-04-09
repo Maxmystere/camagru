@@ -1,8 +1,7 @@
 <?PHP
 session_start();
 
-if ($_SESSION['uname'])
-{
+if ($_SESSION['uname']) {
 	if ($_SERVER['REQUEST_URI'] == "/login.php")
 		header("Location: index.php");
 	echo "<form id='login-form' action='/logout.php' method='post'>";
@@ -22,34 +21,34 @@ if ($_POST['submit'] == "Login" && $_POST['username'] && ctype_alpha($_POST['use
 		die("Connection failed: Sorry !");
 	}
 
-	$res = $pdo->query("SELECT * FROM userlist");
-
+	$res = $pdo->query("SELECT * FROM userlist WHERE `username` LIKE \"" . $_POST['username'] . "\";");
+	$err = true;
 	foreach ($res as $ulog) {
 		if ($ulog['username'] == $_POST['username']) {
-			if (password_verify($_POST['password'], $ulog['password']))
-			{
-				$err = false;
-				$_SESSION['uname'] = $_POST['username'];
-				$_SESSION['email'] = $ulog['email'];
+			if (password_verify($_POST['password'], $ulog['password'])) {
+				if ($ulog['mailconfirm'] != 0) {
+					$errmail = true;
+				} else {
+					$err = false;
+					$_SESSION['uname'] = $_POST['username'];
+					$_SESSION['email'] = $ulog['email'];
+				}
 			}
-			else if (!isset($err))
-				$err = true;
 		}
-		else if (!isset($err))
-			$err = true;
 	}
 }
 
-if (isset($err) && !$err && $_SERVER['REQUEST_URI'] == "/login.php")
-{
+if (isset($err) && !$err && $_SERVER['REQUEST_URI'] == "/login.php") {
 	header("Location: index.php");
 	exit;
 }
 
 require_once "header.php";
-if ($err)
-{
-	echo "Please Verify your credentials<br><br>";
+if ($err) {
+	if (isset($errmail))
+		echo "Please validate your email first<br><br>";
+	else
+		echo "Please Verify your credentials<br><br>";
 }
 
 ?>

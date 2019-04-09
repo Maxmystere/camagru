@@ -32,6 +32,7 @@ try {
 		echo "<tr>";
 		echo "<th>UID</th>";
 		echo "<th>Email</th>";
+		echo "<th>V</th>";
 		echo "<th>Username</th>";
 		echo "<th>Password</th>";
 		echo "</tr>";
@@ -39,6 +40,7 @@ try {
 			echo "<tr>";
 			echo "<td>" . $row['uid'] . "</td>";
 			echo "<td>" . $row['email'] . "</td>";
+			echo "<td>" . $row['mailconfirm'] . "</td>";
 			echo "<td>" . $row['username'] . "</td>";
 			echo "<td>" . $row['password'] . "</td>";
 			echo "</tr>";

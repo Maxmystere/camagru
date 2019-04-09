@@ -1,12 +1,13 @@
 <?PHP
 session_start();
 
-if ($_SESSION['uname'])
-{
-	if ($_SERVER['REQUEST_URI'] == "/register.php")
-		header("Location: index.php");
+if (isset($_SESSION['uname'])) {
+	header("Location: index.php");
 	exit;
 }
+
+$errmail = false;
+$errusername = false;
 
 if ($_POST['submit'] == "Register" && filter_var($_POST['email'], FILTER_VALIDATE_EMAIL) && $_POST['username'] && ctype_alpha($_POST['username']) && strlen($_POST['password']) >= 4) {
 	require_once "config/database.php";
@@ -18,23 +19,31 @@ if ($_POST['submit'] == "Register" && filter_var($_POST['email'], FILTER_VALIDAT
 		die("Connection failed: Sorry !");
 	}
 
-	$req = "INSERT INTO userlist (email, username, password) VALUE ('". $_POST['email'] . "', '" . $_POST['username'] . "', '" . password_hash($_POST['password'], PASSWORD_DEFAULT) . "')";
-
-	$res = $pdo->query($req);
-
+	$res = $pdo->query("SELECT * FROM userlist WHERE `username` LIKE \"" . $_POST['username'] . "\" OR `email` LIKE \"" . $_POST['email'] . "\";");
+	foreach ($res as $ulog) {
+		if ($ulog['email'] == $_POST['email'])
+			$errmail = true;
+		if ($ulog['username'] == $_POST['username'])
+			$errusername = true;
+	}
+	if ($errmail == false && $errusername == false) {
+		$mailconfirm = hash("sha256", $_POST['username'] . "Confirmation");
+		$req = "INSERT INTO userlist (email, username, password, mailconfirm) VALUE ('" . $_POST['email'] . "', '" . $_POST['username'] . "', '" . password_hash($_POST['password'], PASSWORD_DEFAULT) . "', '". $mailconfirm . "')";
+		$res = $pdo->query($req);
+		mail($_POST['email'], "Camagru Register", "Click on this link to validate your account : " . $_SERVER['HTTP_HOST'] . "/mailconfirmator.php?u=" . $_POST['username'] . "&c=" . $mailconfirm);
+		header("Location: index.php?usercreation=complete");
+		exit;
+	}
 
 }
 
-if (isset($err) && !$err && $_SERVER['REQUEST_URI'] == "/register.php")
-{
-	header("Location: index.php");
-	exit;
-}
 
 require_once "header.php";
-if ($err)
-{
-	echo "Please Verify your credentials<br><br>";
+if ($errmail) {
+	echo "Email already used<br><br>";
+}
+if ($errusername) {
+	echo "Username already used<br><br>";
 }
 
 ?>

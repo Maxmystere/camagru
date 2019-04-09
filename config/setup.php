@@ -24,12 +24,13 @@ try {
 			`username` VARCHAR(45) NOT NULL,
 			`password` VARCHAR(255) NOT NULL,
 			`creationtime` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+			`mailconfirm` VARCHAR(255) NOT NULL,
 			PRIMARY KEY (`uid`)
 		);",
-		"INSERT INTO userlist (email, username, password) VALUE ('root@localhost', 'root', '". password_hash('root', PASSWORD_DEFAULT) ."')"
+		"INSERT INTO userlist (email, username, password, mailconfirm) VALUE ('root@localhost', 'root', '". password_hash('root', PASSWORD_DEFAULT) ."', false)"
 	);
 	
-
+	
 	foreach ($sql_requests as $sql) {
 		try {
 			$res = $pdo->query($sql);
