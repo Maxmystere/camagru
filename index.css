@@ -1,0 +1,46 @@
+body {
+	margin: 0;
+	background-color: antiquewhite;
+	font-family: 'Helvetica', Courier, monospace;
+}
+
+.menu {
+	background-color: wheat;
+	margin-bottom: 10px;
+}
+
+.logo {
+	height: 75px;
+	margin: 5px;
+	border-radius: 20px;
+	background: seashell;
+}
+
+.form-popup {
+	position: fixed;
+	text-align: right;
+	top: 15px;
+	right: 15px;
+	border: 3px solid gainsboro;
+	z-index: 9;
+	padding: 5px;
+	background-color: white;
+	border-radius: 20px;
+}
+
+.form-popup button {
+	background-color: grey;
+	border: none;
+	color: white;
+	text-align: center;
+	width: 25px;
+    height: 25px;
+	font-size: 16px;
+	border-radius: 50%;
+}
+
+.form-popup #login-form{
+	display: none;
+	margin: 0;
+
+}
