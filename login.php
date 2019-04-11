@@ -59,7 +59,7 @@ if ($err) {
 	<input type="text" pattern="[A-Za-z]+" name="username" autofocus required><br>
 	Password<br>
 	<input type="password" minlength="4" name="password" required><br>
-	<a href="/register.php">Forgot password?</a><br>
+	<a href="/password_reset.php">Forgot password?</a><br>
 	<input type="submit" name="submit" value="Login">
 	<a href="/register.php">register</a>
 </form>

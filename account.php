@@ -7,6 +7,7 @@ if (!$_SESSION['uname']) {
 }
 
 $errpassword = false;
+$err = false;
 
 function change_db($type, $email, $password, $newvalue)
 {
@@ -35,7 +36,7 @@ function change_db($type, $email, $password, $newvalue)
 			$mailconfirm = hash("sha256", $newvalue . "Confirmation");
 			$req = "UPDATE `userlist` SET `email` = '" . $newvalue . "', `mailconfirm` = '" . $mailconfirm . "' WHERE `email` LIKE \"" . $_POST['email'] . "\";";
 			$res = $pdo->query($req);
-			mail($newvalue, "Camagru Register", "Click on this link to validate your account : " . $_SERVER['HTTP_HOST'] . "/mailconfirmator.php?u=" . $_SESSION['uname'] . "&c=" . $mailconfirm);
+			mail($newvalue, "Camagru Register", "Click on this link to modify your email account : " . $_SERVER['HTTP_HOST'] . "/mailconfirmator.php?u=" . $_SESSION['uname'] . "&c=" . $mailconfirm);
 			unset($_SESSION['uname']);
 			session_destroy();
 			header("Location: logout.php");
@@ -63,7 +64,10 @@ if (filter_var($_POST['email'], FILTER_VALIDATE_EMAIL) && strlen($_POST['passwor
 		//echo ("password change");
 		change_db(3, $_POST['email'], $_POST['password'], $_POST['newpassword']);
 	}
+	else
+		$err = true;
 }
+
 
 
 require_once "config/database.php";
@@ -74,9 +78,10 @@ echo "<button type='button' onclick=\"document.getElementById('login-form').styl
 require_once "login.php";
 echo "</div>";
 
+if ($err)
+	echo "Something went wrong :(";
 if ($errpassword)
 	echo "ERROR ! Wrong Password";
-
 ?>
 
 <div class='account-container'>
