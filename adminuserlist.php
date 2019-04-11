@@ -34,7 +34,6 @@ try {
 		echo "<th>Email</th>";
 		echo "<th>V</th>";
 		echo "<th>Username</th>";
-		echo "<th>Password</th>";
 		echo "</tr>";
 		while ($row = $res->fetch()) {
 			echo "<tr>";
@@ -42,7 +41,6 @@ try {
 			echo "<td>" . $row['email'] . "</td>";
 			echo "<td>" . $row['mailconfirm'] . "</td>";
 			echo "<td>" . $row['username'] . "</td>";
-			echo "<td>" . $row['password'] . "</td>";
 			echo "</tr>";
 		}
 		echo "</table>";
@@ -56,6 +54,5 @@ try {
 }
 
 $conn = null;
-
 
 ?>

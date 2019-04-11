@@ -26,6 +26,7 @@ body {
 	padding: 5px;
 	background-color: white;
 	border-radius: 20px;
+	direction: rtl;
 }
 
 .form-popup button {
@@ -41,11 +42,34 @@ body {
 
 .form-popup #login-form{
 	display: none;
-	margin: 5px;
-
+	direction: initial;
+	line-height: 25px;
 }
 .form-popup #login-form input[type="submit"]{
 	margin-top: 10px;
 	margin-right: 5px;
 	font-size: 16px;
+}
+#login-form{
+	background-color: white;
+	margin: 0px;
+	padding: 10px;
+	padding-top: 0px;
+	line-height: 40px;
+	border-radius: 25px;
+	width: fit-content;
+}
+.account-container {
+	margin: auto;
+	max-width: max-content;
+}
+.account-container form {
+	background-color: white;
+	border-radius: 10px;
+	margin: 15px;
+	padding: 10px;
+	line-height: 40px;
+}
+td input {
+	width: -webkit-fill-available;
 }

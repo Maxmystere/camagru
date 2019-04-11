@@ -4,8 +4,9 @@ session_start();
 if ($_SESSION['uname']) {
 	if ($_SERVER['REQUEST_URI'] == "/login.php")
 		header("Location: index.php");
+	echo "<a style='margin: 8px;' href='/account.php'>My Account</a>";
 	echo "<form id='login-form' action='/logout.php' method='post'>";
-	echo "Hello " . $_SESSION['uname'] . "<br>" . $_SESSION['email'] . "<br>";
+	echo "Signed in as " . $_SESSION['uname'] . "<br>" . $_SESSION['email'] . "<br>";
 	echo "<input type='submit' name='submit' value='Logout'>";
 	echo "</form>";
 	return;
@@ -46,19 +47,20 @@ if (isset($err) && !$err && $_SERVER['REQUEST_URI'] == "/login.php") {
 require_once "header.php";
 if ($err) {
 	if (isset($errmail))
-		echo "Please validate your email first<br><br>";
+		echo "Please validate your email first<br>";
 	else
-		echo "Please Verify your credentials<br><br>";
+		echo "Please Verify your credentials<br>";
 }
 
 ?>
 
 <form id="login-form" action="/login.php" method="post">
-  Username:<br>
-  <input type="text" pattern="[A-Za-z]+" name="username" autofocus required><br>
-  Password:<br>
-  <input type="password" minlength="4" name="password" required><br>
-  <input type="submit" name="submit" value="Login">
-  <a href="/register.php">Or register</a>
+	Username<br>
+	<input type="text" pattern="[A-Za-z]+" name="username" autofocus required><br>
+	Password<br>
+	<input type="password" minlength="4" name="password" required><br>
+	<a href="/register.php">Forgot password?</a><br>
+	<input type="submit" name="submit" value="Login">
+	<a href="/register.php">register</a>
 </form>
 
