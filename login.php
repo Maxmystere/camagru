@@ -27,7 +27,7 @@ if ($_POST['submit'] == "Login" && $_POST['username'] && ctype_alpha($_POST['use
 	foreach ($res as $ulog) {
 		if ($ulog['username'] == $_POST['username']) {
 			if (password_verify($_POST['password'], $ulog['password'])) {
-				if ($ulog['mailconfirm'] != 0) {
+				if ($ulog['mailconfirm'] != '0') {
 					$errmail = true;
 				} else {
 					$err = false;

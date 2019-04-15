@@ -6,11 +6,21 @@ if (!$_SESSION['uname']) {
 	return;
 }
 
-$errpassword = false;
 $err = false;
+$erremail = false;
+$errusername = false;
+$errpassword = false;
 
+/*
+//	If type == 1, newvalue = newusername
+//	If type == 2, newvalue = newemail
+//	If type == 3, newvalue = newpassword
+ */
 function change_db($type, $email, $password, $newvalue)
 {
+	global $err;
+	global $erremail;
+	global $errusername;
 	global $errpassword;
 	require_once "config/database.php";
 
@@ -26,23 +36,35 @@ function change_db($type, $email, $password, $newvalue)
 	if (!password_verify($password, $userdata['password'])) {
 		$errpassword = true;
 	} else {
-		if ($type == 1) {
-			$res = $pdo->query("UPDATE `userlist` SET `username` = \"" . $newvalue . "\" WHERE `email` LIKE \"" . $_POST['email'] . "\";");
-			$_SESSION['uname'] = $newvalue;
-			header("Location: account.php");
-			exit;
-		} else if ($type == 2) {
-
-			$mailconfirm = hash("sha256", $newvalue . "Confirmation");
-			$req = "UPDATE `userlist` SET `email` = '" . $newvalue . "', `mailconfirm` = '" . $mailconfirm . "' WHERE `email` LIKE \"" . $_POST['email'] . "\";";
-			$res = $pdo->query($req);
-			mail($newvalue, "Camagru Register", "Click on this link to modify your email account : " . $_SERVER['HTTP_HOST'] . "/mailconfirmator.php?u=" . $_SESSION['uname'] . "&c=" . $mailconfirm);
-			unset($_SESSION['uname']);
-			session_destroy();
-			header("Location: logout.php");
-			exit;
-
-		} else if ($type == 3) {
+		if ($type == 1) { // If type == 1, newvalue = newusername
+			$checkres = $pdo->query("SELECT * FROM userlist WHERE `username` LIKE \"" . $newvalue . "\";");
+			foreach ($checkres as $ulog) {
+				if ($ulog['username'] == $newvalue)
+					$errusername = true;
+			}
+			if ($errusername == false) {
+				$res = $pdo->query("UPDATE `userlist` SET `username` = \"" . $newvalue . "\" WHERE `email` LIKE \"" . $_POST['email'] . "\";");
+				$_SESSION['uname'] = $newvalue;
+				header("Location: account.php");
+				exit;
+			}
+		} else if ($type == 2) { // If type == 2, newvalue = newemail
+			$checkres = $pdo->query("SELECT * FROM userlist WHERE `email` LIKE \"" . $newvalue . "\";");
+			foreach ($checkres as $ulog) {
+				if ($ulog['email'] == $newvalue)
+					$erremail = true;
+			}
+			if ($erremail == false) {
+				$mailconfirm = hash("sha256", $newvalue . "Confirmation");
+				$req = "UPDATE `userlist` SET `email` = '" . $newvalue . "', `mailconfirm` = '" . $mailconfirm . "' WHERE `email` LIKE \"" . $_POST['email'] . "\";";
+				$res = $pdo->query($req);
+				mail($newvalue, "Camagru Register", "Click on this link to modify your email account : " . $_SERVER['HTTP_HOST'] . "/mailconfirmator.php?u=" . $_SESSION['uname'] . "&c=" . $mailconfirm);
+				unset($_SESSION['uname']);
+				session_destroy();
+				header("Location: logout.php");
+				exit;
+			}
+		} else if ($type == 3) { // If type == 3, newvalue = newpassword
 
 			$res = $pdo->query("UPDATE `userlist` SET `password` = \"" . password_hash($newvalue, PASSWORD_DEFAULT) . "\" WHERE `email` LIKE \"" . $_POST['email'] . "\";");
 			unset($_SESSION['uname']);
@@ -63,8 +85,7 @@ if (filter_var($_POST['email'], FILTER_VALIDATE_EMAIL) && strlen($_POST['passwor
 	} else if ($_POST['submit'] == "Change Password" && strlen($_POST['newpassword']) >= 4) {
 		//echo ("password change");
 		change_db(3, $_POST['email'], $_POST['password'], $_POST['newpassword']);
-	}
-	else
+	} else
 		$err = true;
 }
 
@@ -79,9 +100,13 @@ require_once "login.php";
 echo "</div>";
 
 if ($err)
-	echo "Something went wrong :(";
+	echo "Something went wrong :(<br>";
+if ($erremail)
+	echo "Email already used<br>";
+if ($errusername)
+	echo "Username already used<br>";
 if ($errpassword)
-	echo "ERROR ! Wrong Password";
+	echo "ERROR ! Wrong Password<br>";
 ?>
 
 <div class='account-container'>
