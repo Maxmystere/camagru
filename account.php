@@ -30,7 +30,7 @@ function change_db($type, $email, $password, $newvalue)
 	} catch (PDOException $e) {
 		die("Connection failed: Sorry !");
 	}
-	$res = $pdo->query("SELECT * FROM userlist WHERE `email` LIKE \"" . $_POST['email'] . "\";");
+	$res = $pdo->query("SELECT * FROM userlist WHERE `email` LIKE \"" . $email . "\";");
 	$userdata = $res->fetch();
 
 	if (!password_verify($password, $userdata['password'])) {
@@ -43,7 +43,7 @@ function change_db($type, $email, $password, $newvalue)
 					$errusername = true;
 			}
 			if ($errusername == false) {
-				$res = $pdo->query("UPDATE `userlist` SET `username` = \"" . $newvalue . "\" WHERE `email` LIKE \"" . $_POST['email'] . "\";");
+				$res = $pdo->query("UPDATE `userlist` SET `username` = \"" . $newvalue . "\" WHERE `email` LIKE \"" . $email . "\";");
 				$_SESSION['uname'] = $newvalue;
 				header("Location: account.php");
 				exit;
@@ -56,7 +56,7 @@ function change_db($type, $email, $password, $newvalue)
 			}
 			if ($erremail == false) {
 				$mailconfirm = hash("sha256", $newvalue . "Confirmation");
-				$req = "UPDATE `userlist` SET `email` = '" . $newvalue . "', `mailconfirm` = '" . $mailconfirm . "' WHERE `email` LIKE \"" . $_POST['email'] . "\";";
+				$req = "UPDATE `userlist` SET `email` = '" . $newvalue . "', `mailconfirm` = '" . $mailconfirm . "' WHERE `email` LIKE \"" . $email . "\";";
 				$res = $pdo->query($req);
 				mail($newvalue, "Camagru Register", "Click on this link to modify your email account : " . $_SERVER['HTTP_HOST'] . "/mailconfirmator.php?u=" . $_SESSION['uname'] . "&c=" . $mailconfirm);
 				unset($_SESSION['uname']);
@@ -66,11 +66,19 @@ function change_db($type, $email, $password, $newvalue)
 			}
 		} else if ($type == 3) { // If type == 3, newvalue = newpassword
 
-			$res = $pdo->query("UPDATE `userlist` SET `password` = \"" . password_hash($newvalue, PASSWORD_DEFAULT) . "\" WHERE `email` LIKE \"" . $_POST['email'] . "\";");
+			$res = $pdo->query("UPDATE `userlist` SET `password` = \"" . password_hash($newvalue, PASSWORD_DEFAULT) . "\" WHERE `email` LIKE \"" . $email . "\";");
 			unset($_SESSION['uname']);
 			session_destroy();
 			header("Location: logout.php");
 			exit;
+		} else if ($type == 4) { // If type == 4, newvalue = confirmpassword, deleteaccount
+			if ($password == $newvalue) {
+				$res = $pdo->query("DELETE FROM `userlist` WHERE `email` LIKE \"" . $email . "\";");
+				unset($_SESSION['uname']);
+				session_destroy();
+				header("Location: logout.php");
+				exit;
+			}
 		}
 	}
 }
@@ -161,6 +169,24 @@ if ($errpassword)
 			<tr>
 				<td></td>
 				<td><input type="submit" name="submit" value="Change Password"></td>
+			</tr>
+		</table>
+	</form>
+	<form action="/account.php" method="post">
+	<input type="hidden" id="username4" name="email" value="<?PHP echo $_SESSION['email'] ?>">
+		<table style="width:100%">
+			<caption>Delete Account</caption>
+			<tr>
+				<td>Password :</td>
+				<td><input type="password" minlength="4" name="password" required></td>
+			</tr>
+			<tr>
+				<td>Confirm Password :</td>
+				<td><input type="password" minlength="4" name="newpassword" required></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td><input type="submit" name="submit" value="Delete Account"></td>
 			</tr>
 		</table>
 	</form>
