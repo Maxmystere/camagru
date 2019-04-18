@@ -47,7 +47,7 @@ if (isset($err) && !$err && $_SERVER['REQUEST_URI'] == "/login.php") {
 require_once "header.php";
 if ($err) {
 	if (isset($errmail))
-		echo "Please validate your email first<br>";
+		echo "Please confirm your email first<br>";
 	else
 		echo "Please Verify your credentials<br>";
 }

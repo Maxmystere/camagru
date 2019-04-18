@@ -10,6 +10,7 @@ $err = false;
 $erremail = false;
 $errusername = false;
 $errpassword = false;
+$passmatch = false;
 
 /*
 //	If type == 1, newvalue = newusername
@@ -22,6 +23,7 @@ function change_db($type, $email, $password, $newvalue)
 	global $erremail;
 	global $errusername;
 	global $errpassword;
+	global $passmatch;
 	require_once "config/database.php";
 
 	try {
@@ -78,21 +80,21 @@ function change_db($type, $email, $password, $newvalue)
 				session_destroy();
 				header("Location: logout.php");
 				exit;
-			}
+			} else
+				$passmatch = true;
 		}
 	}
 }
 
 if (filter_var($_POST['email'], FILTER_VALIDATE_EMAIL) && strlen($_POST['password']) >= 4) {
 	if ($_POST['newusername'] != $_SESSION['uname'] && $_POST['submit'] == "Change Username" && $_POST['newusername'] && ctype_alpha($_POST['newusername'])) {
-		//echo ("username change");
 		change_db(1, $_POST['email'], $_POST['password'], $_POST['newusername']);
 	} else if ($_POST['newemail'] != $_SESSION['email'] && $_POST['submit'] == "Change Email" && filter_var($_POST['newemail'], FILTER_VALIDATE_EMAIL)) {
-		//echo ("mail change");
 		change_db(2, $_POST['email'], $_POST['password'], $_POST['newemail']);
 	} else if ($_POST['submit'] == "Change Password" && strlen($_POST['newpassword']) >= 4) {
-		//echo ("password change");
 		change_db(3, $_POST['email'], $_POST['password'], $_POST['newpassword']);
+	} else if ($_POST['submit'] == "Delete Account" && strlen($_POST['newpassword']) >= 4) {
+		change_db(4, $_POST['email'], $_POST['password'], $_POST['newpassword']);
 	} else
 		$err = true;
 }
@@ -114,7 +116,9 @@ if ($erremail)
 if ($errusername)
 	echo "Username already used<br>";
 if ($errpassword)
-	echo "ERROR ! Wrong Password<br>";
+	echo "Wrong Password<br>";
+if ($passmatch)
+	echo "Passwords do not match<br>";
 ?>
 
 <div class='account-container'>

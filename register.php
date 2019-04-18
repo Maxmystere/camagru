@@ -31,7 +31,7 @@ if ($_POST['submit'] == "Register" && filter_var($_POST['email'], FILTER_VALIDAT
 		$req = "INSERT INTO userlist (email, username, password, mailconfirm) VALUE ('" . $_POST['email'] . "', '" . $_POST['username'] . "', '" . password_hash($_POST['password'], PASSWORD_DEFAULT) . "', '". $mailconfirm . "')";
 		$res = $pdo->query($req);
 		mail($_POST['email'], "Camagru Register", "Click on this link to validate your account : " . $_SERVER['HTTP_HOST'] . "/mailconfirmator.php?u=" . $_POST['username'] . "&c=" . $mailconfirm);
-		header("Location: index.php?usercreation=complete");
+		header("Location: login.php?usercreation=complete");
 		exit;
 	}
 
