@@ -15,11 +15,9 @@ echo "<button type='button' onclick=\"document.getElementById('login-form').styl
 require_once "login.php";
 echo "</div>";
 
-
 try {
 	$pdo = new PDO($DB_DSN, $DB_USER, $DB_PASSWORD);
 	$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-	echo "Connected successfully";
 } catch (PDOException $e) {
 	echo "Connection failed: " . $e->getMessage();
 }
@@ -28,19 +26,19 @@ try {
 	$sql = "SELECT * FROM userlist";
 	$res = $pdo->query($sql);
 	if ($res->rowCount() > 0) {
-		echo "<table>";
+		echo "<table style='border: 0.01vw solid black;'>";
 		echo "<tr>";
-		echo "<th>UID</th>";
-		echo "<th>Email</th>";
-		echo "<th>V</th>";
-		echo "<th>Username</th>";
+		echo "<th style='border: 0.01vw solid black;padding: 5px;'>UID</th>";
+		echo "<th style='border: 0.01vw solid black;padding: 5px;'>Email</th>";
+		echo "<th style='border: 0.01vw solid black;padding: 5px;'>V</th>";
+		echo "<th style='border: 0.01vw solid black;padding: 5px;'>Username</th>";
 		echo "</tr>";
 		while ($row = $res->fetch()) {
 			echo "<tr>";
-			echo "<td>" . $row['uid'] . "</td>";
-			echo "<td>" . $row['email'] . "</td>";
-			echo "<td>" . $row['mailconfirm'] . "</td>";
-			echo "<td>" . $row['username'] . "</td>";
+			echo "<td style='border: 0.01vw solid black;padding: 5px;'>" . $row['uid'] . "</td>";
+			echo "<td style='border: 0.01vw solid black;padding: 5px;'>" . $row['email'] . "</td>";
+			echo "<td style='border: 0.01vw solid black;padding: 5px;'>" . $row['mailconfirm'] . "</td>";
+			echo "<td style='border: 0.01vw solid black;padding: 5px;'>" . $row['username'] . "</td>";
 			echo "</tr>";
 		}
 		echo "</table>";

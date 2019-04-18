@@ -86,15 +86,17 @@ function change_db($type, $email, $password, $newvalue)
 	}
 }
 
-if (filter_var($_POST['email'], FILTER_VALIDATE_EMAIL) && strlen($_POST['password']) >= 4) {
+if (filter_var($_SESSION['email'], FILTER_VALIDATE_EMAIL) && strlen($_POST['password']) >= 4) {
 	if ($_POST['newusername'] != $_SESSION['uname'] && $_POST['submit'] == "Change Username" && $_POST['newusername'] && ctype_alpha($_POST['newusername'])) {
-		change_db(1, $_POST['email'], $_POST['password'], $_POST['newusername']);
+		change_db(1, $_SESSION['email'], $_POST['password'], $_POST['newusername']);
 	} else if ($_POST['newemail'] != $_SESSION['email'] && $_POST['submit'] == "Change Email" && filter_var($_POST['newemail'], FILTER_VALIDATE_EMAIL)) {
-		change_db(2, $_POST['email'], $_POST['password'], $_POST['newemail']);
+		change_db(2, $_SESSION['email'], $_POST['password'], $_POST['newemail']);
 	} else if ($_POST['submit'] == "Change Password" && strlen($_POST['newpassword']) >= 4) {
-		change_db(3, $_POST['email'], $_POST['password'], $_POST['newpassword']);
+		change_db(3, $_SESSION['email'], $_POST['password'], $_POST['newpassword']);
 	} else if ($_POST['submit'] == "Delete Account" && strlen($_POST['newpassword']) >= 4) {
-		change_db(4, $_POST['email'], $_POST['password'], $_POST['newpassword']);
+		change_db(4, $_SESSION['email'], $_POST['password'], $_POST['newpassword']);
+	} else if ($_POST['submit'] == "Update Notification") {
+		
 	} else
 		$err = true;
 }
@@ -123,7 +125,21 @@ if ($passmatch)
 
 <div class='account-container'>
 	<form action="/account.php" method="post">
-	<input type="hidden" id="username1" name="email" value="<?PHP echo $_SESSION['email'] ?>">
+		<table style="width:100%">
+			<caption>Notifications</caption>
+			<tr>
+				<td>Mail Notification :</td>
+				<td><input type="checkbox" name="notifmail" <?PHP if ($_SESSION['notifmail']) {
+																																																echo "checked";
+																																															} ?>><br></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td><input type="submit" name="submit" value="Update Notification"></td>
+			</tr>
+		</table>
+	</form>
+	<form action="/account.php" method="post">
 		<table style="width:100%">
 			<caption>Change Email</caption>
 			<tr>
@@ -141,7 +157,6 @@ if ($passmatch)
 		</table>
 	</form>
 	<form action="/account.php" method="post">
-	<input type="hidden" id="username2" name="email" value="<?PHP echo $_SESSION['email'] ?>">
 		<table style="width:100%">
 			<caption>Change Username</caption>
 			<tr>
@@ -159,7 +174,6 @@ if ($passmatch)
 		</table>
 	</form>
 	<form action="/account.php" method="post">
-	<input type="hidden" id="username3" name="email" value="<?PHP echo $_SESSION['email'] ?>">
 		<table style="width:100%">
 			<caption>Change Password</caption>
 			<tr>
@@ -177,7 +191,6 @@ if ($passmatch)
 		</table>
 	</form>
 	<form action="/account.php" method="post">
-	<input type="hidden" id="username4" name="email" value="<?PHP echo $_SESSION['email'] ?>">
 		<table style="width:100%">
 			<caption>Delete Account</caption>
 			<tr>

@@ -24,6 +24,7 @@ try {
 			`username` VARCHAR(45) NOT NULL,
 			`password` VARCHAR(255) NOT NULL,
 			`creationtime` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+			`notifmail` BOOLEAN DEFAULT TRUE,
 			`mailconfirm` VARCHAR(255) NOT NULL,
 			PRIMARY KEY (`uid`)
 		);",

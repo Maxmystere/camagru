@@ -4,6 +4,9 @@ session_start();
 if ($_SESSION['uname']) {
 	if ($_SERVER['REQUEST_URI'] == "/login.php")
 		header("Location: index.php");
+	if ($_SESSION['uname'] == 'root') {
+		echo "<a href='/adminuserlist.php'>AdminManager</a>";
+	}
 	echo "<a style='margin: 8px;' href='/account.php'>My Account</a>";
 	echo "<form id='login-form' action='/logout.php' method='post'>";
 	echo "Signed in as " . $_SESSION['uname'] . "<br>" . $_SESSION['email'] . "<br>";
@@ -33,6 +36,7 @@ if ($_POST['submit'] == "Login" && $_POST['username'] && ctype_alpha($_POST['use
 					$err = false;
 					$_SESSION['uname'] = $_POST['username'];
 					$_SESSION['email'] = $ulog['email'];
+					$_SESSION['notifmail'] = $ulog['notifmail'];
 				}
 			}
 		}
