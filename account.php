@@ -86,6 +86,25 @@ function change_db($type, $email, $password, $newvalue)
 	}
 }
 
+function update_notif($email, $mailnotif)
+{
+	require_once "config/database.php";
+
+	try {
+		$pdo = new PDO($DB_DSN, $DB_USER, $DB_PASSWORD);
+		$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+	} catch (PDOException $e) {
+		die("Connection failed: Sorry !");
+	}
+	if (isset($mailnotif)) {
+		$res = $pdo->query("UPDATE `userlist` SET `mailnotif` = true WHERE `email` LIKE \"" . $email . "\";");
+		$_SESSION['mailnotif'] = 1;
+	} else {
+		$res = $pdo->query("UPDATE `userlist` SET `mailnotif` = false WHERE `email` LIKE \"" . $email . "\";");
+		$_SESSION['mailnotif'] = 0;
+	}
+}
+
 if (filter_var($_SESSION['email'], FILTER_VALIDATE_EMAIL) && strlen($_POST['password']) >= 4) {
 	if ($_POST['newusername'] != $_SESSION['uname'] && $_POST['submit'] == "Change Username" && $_POST['newusername'] && ctype_alpha($_POST['newusername'])) {
 		change_db(1, $_SESSION['email'], $_POST['password'], $_POST['newusername']);
@@ -95,10 +114,10 @@ if (filter_var($_SESSION['email'], FILTER_VALIDATE_EMAIL) && strlen($_POST['pass
 		change_db(3, $_SESSION['email'], $_POST['password'], $_POST['newpassword']);
 	} else if ($_POST['submit'] == "Delete Account" && strlen($_POST['newpassword']) >= 4) {
 		change_db(4, $_SESSION['email'], $_POST['password'], $_POST['newpassword']);
-	} else if ($_POST['submit'] == "Update Notification") {
-		
 	} else
 		$err = true;
+} else if ($_POST['submit'] == "Update Notification") {
+	update_notif($_SESSION['email'], $_POST['mailnotif']);
 }
 
 
@@ -129,9 +148,7 @@ if ($passmatch)
 			<caption>Notifications</caption>
 			<tr>
 				<td>Mail Notification :</td>
-				<td><input type="checkbox" name="notifmail" <?PHP if ($_SESSION['notifmail']) {
-																																																echo "checked";
-																																															} ?>><br></td>
+				<td><input type="checkbox" name="mailnotif" <?PHP if ($_SESSION['mailnotif']) { echo "checked"; } ?>></td>
 			</tr>
 			<tr>
 				<td></td>

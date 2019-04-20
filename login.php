@@ -36,7 +36,7 @@ if ($_POST['submit'] == "Login" && $_POST['username'] && ctype_alpha($_POST['use
 					$err = false;
 					$_SESSION['uname'] = $_POST['username'];
 					$_SESSION['email'] = $ulog['email'];
-					$_SESSION['notifmail'] = $ulog['notifmail'];
+					$_SESSION['mailnotif'] = $ulog['mailnotif'];
 				}
 			}
 		}
