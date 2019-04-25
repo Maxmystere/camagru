@@ -7,6 +7,7 @@ if ($_SESSION['uname']) {
 	if ($_SESSION['uname'] == 'root') {
 		echo "<a href='/adminuserlist.php'>AdminManager</a>";
 	}
+	echo "<a style='margin: 8px;' href='/photomaker.php'>PhotoMaker</a>";
 	echo "<a style='margin: 8px;' href='/account.php'>My Account</a>";
 	echo "<form id='login-form' action='/logout.php' method='post'>";
 	echo "Signed in as " . $_SESSION['uname'] . "<br>" . $_SESSION['email'] . "<br>";
