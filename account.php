@@ -75,7 +75,10 @@ function change_db($type, $email, $password, $newvalue)
 			exit;
 		} else if ($type == 4) { // If type == 4, newvalue = confirmpassword, deleteaccount
 			if ($password == $newvalue) {
-				$res = $pdo->query("DELETE FROM `userlist` WHERE `email` LIKE \"" . $email . "\";");
+				$pdo->query("DELETE FROM `comments` WHERE `id_user` LIKE \"" . $_SESSION['uid'] . "\";");
+				$pdo->query("DELETE FROM `likes` WHERE `id_user` LIKE \"" . $_SESSION['uid'] . "\";");
+				$pdo->query("DELETE FROM `photos` WHERE `id_user` LIKE \"" . $_SESSION['uid'] . "\";");
+				$pdo->query("DELETE FROM `userlist` WHERE `email` LIKE \"" . $email . "\";");
 				unset($_SESSION['uname']);
 				session_destroy();
 				header("Location: logout.php");

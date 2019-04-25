@@ -26,7 +26,7 @@ try {
 	$sql = "SELECT * FROM userlist";
 	$res = $pdo->query($sql);
 	if ($res->rowCount() > 0) {
-		echo "<table style='border: 0.01vw solid black;'>";
+		echo "<table style='border: 0.01vw solid black;background-color: white'>";
 		echo "<tr>";
 		echo "<th style='border: 0.01vw solid black;padding: 5px;'>UID</th>";
 		echo "<th style='border: 0.01vw solid black;padding: 5px;'>Email</th>";

@@ -1,11 +1,66 @@
 body {
 	margin: 0;
-	background-color: antiquewhite;
+	background-color: #111111;
 	font-family: 'Helvetica', Courier, monospace;
+}
+a {
+	text-decoration: none;
+}
+
+.chrome {
+    position: relative;
+    background-image: -webkit-linear-gradient(#378DBC 0%, #B6E8F1 50%, #ffffff 53%, #32120E 57%, #FFC488 61%, #582C11 93%, #EC9B4E 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-text-stroke: 4px #f5f5f5;
+    font-size: 100px;
+    font-family: 'Titillium Web', sans-serif;
+    font-style: italic;
+    margin: 0;
+	line-height: 1;
+}
+
+.chrome:before {
+    content: 'CAMA';
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 5;
+    background-image: -webkit-linear-gradient(-40deg, transparent 0%, transparent 40%, #fff 50%, transparent 60%, transparent 100%);
+    background-position: 150px;
+    -webkit-background-clip: text;
+    -webkit-text-stroke: 0;
+    animation-name: chrome_effect;
+    animation-duration: 5s;
+	animation-delay: 0s;
+    animation-timing-function: ease-in;
+	animation-iteration-count: infinite;
+	width: 400px;
+}
+
+@keyframes chrome_effect {
+	0% {background-position:150px 0;}
+	100% {background-position:550px 0;}
+  }
+
+.dreams {
+    position: absolute;
+    margin: 0px;
+    font-family: 'Mr Dafoe', cursive;
+    font-size: 70px;
+    color: #F975F7;
+    transform: rotate(-20deg);
+    /*-ms-transform: rotate(-15deg);
+    -webkit-transform: rotate(-15deg);*/
+    margin-left: 225px;
+    margin-top: -90px;
+    -webkit-text-stroke: 1px #f008b7;
+    -webkit-filter: drop-shadow(2px 2px 20px #f008b7);
+    z-index: 6;
 }
 
 .menu {
-	background-color: wheat;
+	background-color: black;
 	margin-bottom: 10px;
 }
 
@@ -72,4 +127,95 @@ body {
 }
 td input {
 	width: -webkit-fill-available;
+}
+
+.flex-container {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+}
+.flex-container > div {
+	height: 350px;
+	margin: 10px;
+	padding: 10px;
+	text-align: center;
+	background-color: white;
+	border-radius: 20px;
+	padding-bottom: 0;
+}
+.flex-container > div > img {
+	margin: 10 auto;
+	height: 300px;
+}
+.flex-container > div > form {
+	margin: 0;
+}
+
+.solo-container {
+	margin: 20px;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	background-color: white;
+	border-radius: 20px;
+}
+.solo-container > div {
+	height: 600px;
+	width: 100%;
+    max-width: 550px;
+	margin: 10px;
+	padding: 10px;
+	text-align: center;
+	padding-bottom: 0;
+}
+.solo-container > div > img {
+	margin: 10 auto;
+	max-height: 550px;
+	width: 100%;
+	overflow: hidden;
+}
+.solo-container > div > form {
+	margin: 0;
+	margin-bottom: 10px;
+}
+.solo-container > div > p {
+	padding: 10px;
+	margin: 0 10px;
+	/*background-color: #fac88a;*/
+	text-align: left;
+	border-style: outset;
+	border-radius: 5px;
+	/*border-color: #111111;*/
+}
+
+.commdiv {
+	width: 100%;
+}
+
+.liketxt {
+	font-size: 25px;
+	display: inline;
+	color: #ed2121;
+	text-shadow: 2px 1px 0 #c01919;
+	line-height: 0px;
+	position: relative;
+}
+
+.likebtn {
+	border-radius: 50%;
+	width: 30px;
+	height: 30px;
+	top: -5px;
+	position: relative;
+}
+
+.commform {
+	width: 95%;
+	padding: 10px;
+	border-radius: 20px;
+	background-color: lightblue;
+}
+
+.commenttext {
+	max-width: 500px;
+	width: 100%;
 }

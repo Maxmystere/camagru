@@ -37,6 +37,7 @@ if ($_POST['submit'] == "Login" && $_POST['username'] && ctype_alpha($_POST['use
 					$_SESSION['uname'] = $_POST['username'];
 					$_SESSION['email'] = $ulog['email'];
 					$_SESSION['mailnotif'] = $ulog['mailnotif'];
+					$_SESSION['uid'] = $ulog['uid'];
 				}
 			}
 		}
@@ -49,6 +50,7 @@ if (isset($err) && !$err && $_SERVER['REQUEST_URI'] == "/login.php") {
 }
 
 require_once "header.php";
+echo "<form id='login-form' action='/login.php' method='post'>";
 if ($err) {
 	if (isset($errmail))
 		echo "Please confirm your email first<br>";
@@ -58,7 +60,7 @@ if ($err) {
 
 ?>
 
-<form id="login-form" action="/login.php" method="post">
+
 	Username<br>
 	<input type="text" pattern="[A-Za-z]+" name="username" autofocus required><br>
 	Password<br>

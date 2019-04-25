@@ -39,16 +39,16 @@ if ($_POST['submit'] == "Register" && filter_var($_POST['email'], FILTER_VALIDAT
 
 
 require_once "header.php";
+echo "<form id='login-form' action='/register.php' method='post'>";
 if ($errmail) {
-	echo "Email already used<br><br>";
+	echo "Email already used<br>";
 }
 if ($errusername) {
-	echo "Username already used<br><br>";
+	echo "Username already used<br>";
 }
 
 ?>
 
-<form id="login-form" action="/register.php" method="post">
 	Email:<br>
 	<input type="email" name="email" required><br>
 	Username:<br>
