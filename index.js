@@ -22,7 +22,7 @@ $(document).ready(function () {
 		return false;
 	});
 	$('.commform').submit(function () {
-		console.log($(this).serialize());
+		console.log("NOOT " + $(this).serialize());
 		$.ajax({
 			url: '/comment.php',
 			type: 'post',
