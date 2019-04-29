@@ -17,9 +17,9 @@ function change_db($type, $email, $password, $newvalue)
 
 
 	if ($type == 2) {
-		$newpassword = hash("md5", rand());
+		$newpassword = hash("sha1", rand(1000, 156875322));
 		$mailconfirm = hash("sha256", $newvalue . "Confirmation");
-		$req = "UPDATE `userlist` SET `password` = '" . $newpassword . "', `mailconfirm` = '" . $mailconfirm . "' WHERE `email` LIKE \"" . $_POST['email'] . "\";";
+		$req = "UPDATE `userlist` SET `password` = \"" . password_hash($newpassword, PASSWORD_DEFAULT) . "\", `mailconfirm` = '" . $mailconfirm . "' WHERE `email` LIKE \"" . $_POST['email'] . "\";";
 		$res = $pdo->query($req);
 		mail($_POST['email'], "Camagru Register", "Click on this link to reset your password (new is " . $newpassword . " ) : " . $_SERVER['HTTP_HOST'] . "/mailconfirmator.php?u=" . $_SESSION['uname'] . "&c=" . $mailconfirm);
 		unset($_SESSION['uname']);
