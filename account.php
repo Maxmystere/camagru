@@ -60,7 +60,7 @@ function change_db($type, $email, $password, $newvalue)
 				$mailconfirm = hash("sha256", $newvalue . "Confirmation");
 				$req = "UPDATE `userlist` SET `email` = '" . $newvalue . "', `mailconfirm` = '" . $mailconfirm . "' WHERE `email` LIKE \"" . $email . "\";";
 				$res = $pdo->query($req);
-				mail($newvalue, "Camagru Register", "Click on this link to modify your email account : " . $_SERVER['HTTP_HOST'] . "/mailconfirmator.php?u=" . $_SESSION['uname'] . "&c=" . $mailconfirm);
+				mail($newvalue, "Camagru Mail", "Click on this link to modify your email account : " . $_SERVER['HTTP_HOST'] . "/mailconfirmator.php?u=" . $_SESSION['uname'] . "&c=" . $mailconfirm);
 				unset($_SESSION['uname']);
 				session_destroy();
 				header("Location: logout.php");

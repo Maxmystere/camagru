@@ -21,7 +21,7 @@ function change_db($type, $email, $password, $newvalue)
 		$mailconfirm = hash("sha256", $newvalue . "Confirmation");
 		$req = "UPDATE `userlist` SET `password` = \"" . password_hash($newpassword, PASSWORD_DEFAULT) . "\", `mailconfirm` = '" . $mailconfirm . "' WHERE `email` LIKE \"" . $_POST['email'] . "\";";
 		$res = $pdo->query($req);
-		mail($_POST['email'], "Camagru Register", "Click on this link to reset your password (new is " . $newpassword . " ) : " . $_SERVER['HTTP_HOST'] . "/mailconfirmator.php?u=" . $_SESSION['uname'] . "&c=" . $mailconfirm);
+		mail($_POST['email'], "Camagru Password", "Click on this link to reset your password (new is " . $newpassword . " ) : " . $_SERVER['HTTP_HOST'] . "/mailconfirmator.php?u=" . $_SESSION['uname'] . "&c=" . $mailconfirm);
 		unset($_SESSION['uname']);
 		session_destroy();
 		header("Location: logout.php");
