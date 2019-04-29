@@ -15,9 +15,9 @@ if (is_numeric($_POST['pid']) && isset($_SESSION['uid']) && $_POST['comment'])
 	{
 		if ($user = $pdo->query("SELECT * FROM userlist WHERE `mailnotif` LIKE 1 AND `uid` LIKE \"" . $img['id_user'] . "\";")->fetch())
 		{
-			mail($user['email'], "You have a new comment !", "Image URL : " . $_SERVER['HTTP_HOST'] . "/photo.php?pid=" . $_POST['pid'] . "\n" . $_POST['comment']);
+			mail($user['email'], "You have a new comment !", "Image URL : " . $_SERVER['HTTP_HOST'] . "/photo.php?pid=" . $_POST['pid'] . "\n" . strip_tags($_POST['comment']));
 		}
-		$pdo->query("INSERT INTO comments (id_photo, id_user, comment) VALUES (" . $_POST['pid']. "," . $_SESSION['uid'] . ", '". base64_encode($_POST['comment']) ."' );");
+		$pdo->query("INSERT INTO comments (id_photo, id_user, comment) VALUES (" . $_POST['pid']. "," . $_SESSION['uid'] . ", '". base64_encode(strip_tags($_POST['comment'])) ."' );");
 		echo json_encode(array('pid' => $_POST['pid'], 'newcom' => base64_encode($_POST['comment']), 'u' => $user, 'im' => $img));
 	}
 }
