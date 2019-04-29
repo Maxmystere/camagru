@@ -127,15 +127,27 @@ window.onload = function () {
 				var txt = "mid=" + imgclick.last + "&cam=" + encodeURIComponent(canvassnap.toDataURL());
 			else
 				var txt = "mid=" + imgclick.last + "&cam=" + encodeURIComponent(dataURL);
+				
+			var request = new XMLHttpRequest();
+			request.open('POST', '/meme.php', true);
+			request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+			request.onload = function() {
+				if (request.status >= 200 && request.status < 400) {
+					window.location.reload();
+				}
+			};
+			request.send(txt);
+			/*
 			$.ajax({
 				url: '/meme.php',
 				type: 'post',
-				data: txt,
+				data: , txt,
 				success: function (data) {
 					//console.log(data);
-					window.location.reload();
+					
 				}
 			});
+			*/
 		}
 	});
 

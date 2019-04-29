@@ -265,7 +265,7 @@ td input {
 	padding: 10px;
 	height: 700px;
 	width: 300px;
-	overflow: overlay;
+	overflow: auto;
 	background-color: white;
 }
 .makercontainer .shower img{

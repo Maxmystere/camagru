@@ -6,10 +6,11 @@ if (isset($_SESSION['uname'])) {
 	exit;
 }
 
+$err = false;
 $errmail = false;
 $errusername = false;
 
-if ($_POST['submit'] == "Register" && filter_var($_POST['email'], FILTER_VALIDATE_EMAIL) && $_POST['username'] && ctype_alpha($_POST['username']) && strlen($_POST['password']) >= 4) {
+if ($_POST['submit'] == "Register" && filter_var($_POST['email'], FILTER_VALIDATE_EMAIL) && $_POST['username'] && ctype_alpha($_POST['username']) && preg_match('/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/', $_POST['password'])) {
 	require_once "config/database.php";
 
 	try {
@@ -36,10 +37,15 @@ if ($_POST['submit'] == "Register" && filter_var($_POST['email'], FILTER_VALIDAT
 	}
 
 }
+else if ($_POST['submit'] == "Register")
+	$err = true;
 
 
 require_once "header.php";
 echo "<form id='login-form' action='/register.php' method='post'>";
+if ($err){
+	echo "Internal Error<br>";
+}
 if ($errmail) {
 	echo "Email already used<br>";
 }
@@ -54,7 +60,7 @@ if ($errusername) {
 	Username:<br>
 	<input type="text" pattern="[A-Za-z]+" name="username" required><br>
 	Password:<br>
-	<input type="password" minlength="4" name="password" required><br><br>
+	<input type="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" name="password" required><br><br>
 	<input type="submit" name="submit" value="Register">
 </form>
 

@@ -113,7 +113,7 @@ if (filter_var($_SESSION['email'], FILTER_VALIDATE_EMAIL) && strlen($_POST['pass
 		change_db(1, $_SESSION['email'], $_POST['password'], $_POST['newusername']);
 	} else if ($_POST['newemail'] != $_SESSION['email'] && $_POST['submit'] == "Change Email" && filter_var($_POST['newemail'], FILTER_VALIDATE_EMAIL)) {
 		change_db(2, $_SESSION['email'], $_POST['password'], $_POST['newemail']);
-	} else if ($_POST['submit'] == "Change Password" && strlen($_POST['newpassword']) >= 4) {
+	} else if ($_POST['submit'] == "Change Password" && preg_match('/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/', $_POST['password'])) {
 		change_db(3, $_SESSION['email'], $_POST['password'], $_POST['newpassword']);
 	} else if ($_POST['submit'] == "Delete Account" && strlen($_POST['newpassword']) >= 4) {
 		change_db(4, $_SESSION['email'], $_POST['password'], $_POST['newpassword']);
@@ -202,7 +202,7 @@ if ($passmatch)
 			</tr>
 			<tr>
 				<td>New Password :</td>
-				<td><input type="password" minlength="4" name="newpassword" required></td>
+				<td><input type="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" name="newpassword" required></td>
 			</tr>
 			<tr>
 				<td></td>
